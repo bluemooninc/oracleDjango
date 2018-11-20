@@ -1,0 +1,35 @@
+###
+### https://qiita.com/shintaro123/items/a8a3d222d3dd46aba876
+###
+version: '2'
+
+services:
+  oracle:
+    image: sath89/oracle-12c
+    container_name: "oracle-container"
+    ports:
+      - "8080:8080"
+      - "1521:1521"
+    environment:
+      ORACLE_SID: xe
+      ORACLE_PDB: xe
+    volumes:
+     - "./oracle:/u01/app/oracle"
+
+  django:
+    restart: always
+    build: ./django
+    container_name: "django-container"
+    command: 'tail -f /dev/null'
+    ports:
+      - "22:22"
+      - "80:8000"
+#    links:
+#      - "oracle:db"
+    volumes:
+      - ./django/src:/root/src
+    working_dir: '/root/'
+    entrypoint: /run-kicker.sh
+
+volumes:
+  data: {}
