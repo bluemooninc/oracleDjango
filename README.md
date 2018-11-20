@@ -76,3 +76,7 @@ DATABASES = {
     'PASSWORD': 'oracle',
 }
 ```
+## How to edit your code
+
+"oracleDjango/django/src" folder of the host side is share folder to "/root/src" of django container.
+You can edit host and container both.
