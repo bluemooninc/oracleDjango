@@ -62,6 +62,8 @@ $ cd mysite
 $ python manage.py runserver 0.0.0.0:8000
 ```
 
+Check by Browser at "http://localhost"
+
 ## oracle settings for django
 
  https://orablogs-jp.blogspot.com/2017/09/cxoracle-rpms-have-landed-on-oracle.html
