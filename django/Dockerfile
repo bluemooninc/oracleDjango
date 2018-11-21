@@ -57,6 +57,7 @@ RUN rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6 \
 RUN mkdir -p /tmp
 COPY oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm /tmp/
 COPY oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm /tmp/
+COPY oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm /tmp/
 ENV ORACLE_HOME /usr/lib/oracle/12.2/client64
 ENV ORACLE_SID orcl
 ENV LD_RUN_PATH $ORACLE_HOME
@@ -66,6 +67,7 @@ ENV TNS_ADMIN $ORACLE_HOME/network/admin
 RUN cd /tmp && \
     rpm -ivh oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm && \
     rpm -ivh oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm && \
+    rpm -ivh oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm && \
     ln -s $LD_LIBRARY_PATH/libclntsh.so.12.1 $LD_LIBRARY_PATH/libclntsh.so && \
     rm *.rpm
 
