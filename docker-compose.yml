@@ -24,8 +24,8 @@ services:
     ports:
       - "22:22"
       - "80:8000"
-#    links:
-#      - "oracle:db"
+    links:
+      - "oracle:db"
     volumes:
       - ./django/src:/root/src
     working_dir: '/root/'

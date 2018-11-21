@@ -55,18 +55,18 @@ RUN rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6 \
 # Install cx_Oracle
 ###################
 RUN mkdir -p /tmp
-COPY oracle-instantclient18.3-basic-18.3.0.0.0-1.x86_64.rpm /tmp/
-COPY oracle-instantclient18.3-sqlplus-18.3.0.0.0-1.x86_64.rpm /tmp/
-ENV ORACLE_HOME /usr/lib/oracle/18.3/client64
+COPY oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm /tmp/
+COPY oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm /tmp/
+ENV ORACLE_HOME /usr/lib/oracle/12.2/client64
 ENV ORACLE_SID orcl
 ENV LD_RUN_PATH $ORACLE_HOME
 ENV LD_LIBRARY_PATH $ORACLE_HOME/lib
 ENV PATH=$ORACLE_HOME/bin:$PATH
 ENV TNS_ADMIN $ORACLE_HOME/network/admin
 RUN cd /tmp && \
-    rpm -ivh oracle-instantclient18.3-basic-18.3.0.0.0-1.x86_64.rpm && \
-    rpm -ivh oracle-instantclient18.3-sqlplus-18.3.0.0.0-1.x86_64.rpm && \
-    ln -s $LD_LIBRARY_PATH/libclntsh.so.18.1 $LD_LIBRARY_PATH/libclntsh.so && \
+    rpm -ivh oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm && \
+    rpm -ivh oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm && \
+    ln -s $LD_LIBRARY_PATH/libclntsh.so.12.2 $LD_LIBRARY_PATH/libclntsh.so && \
     rm *.rpm
 
 #RUN pip install cx_Oracle
@@ -82,12 +82,12 @@ RUN echo "orcl=\
               (SID=orcl)\
               (SERVICE_NAME=pdb1)\
             )\
-          )" >> /usr/lib/oracle/18.3/client64/network/admin/tnsnames.ora
+          )" >> /usr/lib/oracle/12.2/client64/network/admin/tnsnames.ora
 
 
 # initializing
-RUN chkconfig iptables off
-RUN /etc/init.d/iptables stop
+# RUN chkconfig iptables off
+# RUN /etc/init.d/iptables stop
 ADD run-kicker.sh /run-kicker.sh
 RUN chmod -v +x /run-kicker.sh
 

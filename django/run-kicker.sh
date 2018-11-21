@@ -6,7 +6,9 @@
 ##############################
 # Install Django and cx Oracle
 ##############################
-pip install cx_Oracle==6.0.3
+pip install cx_Oracle==5.3
 pip install django==1.6
+pip install south
+pip freeze
 
 exec /sbin/init
