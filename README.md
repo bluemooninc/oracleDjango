@@ -8,7 +8,7 @@ This repository build a django and oracle container by docker-compose
 - how to use for docker basis
 - how to use for ORACLE basis
 
-## How to start
+## How to start,strop rebuild docker container
 
 start docker container
 
@@ -24,7 +24,17 @@ stop docker container
 docker-compose down
 ```
 
-## Oracle container information
+rebuild docker container
+
+```buildoutcfg
+## list for docker images you will find oracledjango_django repository
+docker images
+## delete docker image id such like this
+docker rmi c0ab5f236f9a
+## start docker container again
+```
+
+### Oracle container information
 
 this repository is pulling below url oracle image
 
@@ -41,12 +51,27 @@ username: system
 password: oracle
 ```
 
-## Start django project
+## Start your django project
 
 login to django container
 
 ```commandline
 docker exec -it django-container bash
+```
+
+Make sure ORACLE connection by sqlplus
+
+```buildoutcfg
+sqlplus system/oracle@oracle-container:1521/xe
+
+```
+
+Create user on Oracle
+
+```
+CREATE USER develop identified by develop default tablespace USERS temporary tablespace temp profile default;
+GRANT CONNECT, RESOURCE TO develop
+GRANT UNLIMITED TABLESPACE TO develop;
 ```
 
 ### Creating sample application
@@ -68,47 +93,58 @@ Check by Browser at "http://localhost"
 
 ## oracle settings for django
 
- https://orablogs-jp.blogspot.com/2017/09/cxoracle-rpms-have-landed-on-oracle.html
-
-set like below in settings.py
+Edit settings.py and set your created user like below. 
 
 ```buildoutcfg
 DATABASES = {
-    'ENGINE': 'django.db.backends.oracle',
-    'NAME' : 'oracle-container:1521/xe',
-    'USER': 'system',
-    'PASSWORD': 'oracle',
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'oracle-container:1521/xe',
+        'USER': 'develop',
+        'PASSWORD': 'develop',
+    }
 }
 ```
+
+Create database table for django
+
+```buildoutcfg
+## inspect
+python manage.py inspactdb
+## create django system tables
+python manage.py syncdb
+
+```
+
+Install and check by SQLDevelopper Tool
+
+Connection Name: local
+username: system
+password: oracle
+hostname: 127.0.0.1
+port: 1521
+sid: xe
+
+You will find tables in tree menu
+
+```buildoutcfg
+Other Users
+  DEVELOP
+    Tables
+      DJANGO_SESSION
+```
+
 ## How to edit your code
 
 "oracleDjango/django/src" folder of the host side is share folder to "/root/src" of django container.
 You can edit host and container both.
 
-## 1st migration to your db
+## About migration
 
-Add 'south' in INSTALLED_APPS array in settings.py
-This definition is setup for django south migration module.
+Django1.6 does not work well about manage.py migrate.
+We should coding model first like this
 
-```buildoutcfg
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'south',
-]
-```
-
-After that you can use migration command
-
-```buildoutcfg
-python manage.py migrate
-```
+https://co3k.org/blog/35
 
 ---
 
@@ -123,6 +159,9 @@ workspace: INTERNAL
 user: ADMIN
 password: 0Racle$
 ```
+
+add _ for new password to convenient.
+
 Apex upgrade up to v 5.*
 
 docker run -it --rm --volumes-from ${DB_CONTAINER_NAME} --link ${DB_CONTAINER_NAME}:oracle-database -e PASS=YourSYSPASS sath89/apex install

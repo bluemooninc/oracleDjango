@@ -64,6 +64,14 @@ ENV LD_RUN_PATH $ORACLE_HOME
 ENV LD_LIBRARY_PATH $ORACLE_HOME/lib
 ENV PATH=$ORACLE_HOME/bin:$PATH
 ENV TNS_ADMIN $ORACLE_HOME/network/admin
+
+RUN echo "export ORACLE_HOME=/usr/lib/oracle/12.2/client64" >> /root/.bash_profile
+RUN echo "export ORACLE_SID=orcl" >> /root/.bash_profile
+RUN echo "export LD_RUN_PATH=$ORACLE_HOME" >> /root/.bash_profile
+RUN echo "export LD_LIBRARY_PATH $ORACLE_HOME/lib" >> /root/.bash_profile
+RUN echo "export PATH=$ORACLE_HOME/bin:$PATH" >> /root/.bash_profile
+RUN echo "export TNS_ADMIN $ORACLE_HOME/network/admin" >> /root/.bash_profile
+
 RUN cd /tmp && \
     rpm -ivh oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm && \
     rpm -ivh oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm && \
