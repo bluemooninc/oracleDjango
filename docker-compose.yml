@@ -22,7 +22,7 @@ services:
     container_name: "django-container"
     command: 'tail -f /dev/null'
     ports:
-      - "22:22"
+      - "2022:22"
       - "80:8000"
     links:
       - "oracle:db"
