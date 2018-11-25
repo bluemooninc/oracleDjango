@@ -70,7 +70,7 @@ Create user on Oracle
 
 ```
 CREATE USER develop identified by develop default tablespace USERS temporary tablespace temp profile default;
-GRANT CONNECT, RESOURCE TO develop
+GRANT CONNECT, RESOURCE TO develop;
 GRANT UNLIMITED TABLESPACE TO develop;
 ```
 
